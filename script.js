@@ -4,6 +4,7 @@ const singlePlayerBtn = document.getElementById('single-player');
 const multiPlayerBtn = document.getElementById('multi-player');
 const modeSelection = document.getElementById('mode-selection');
 const gameBoard = document.getElementById('game');
+const turnIndicator = document.getElementById('turn-indicator');
 
 let currentPlayer = 'X';
 let board = ['', '', '', '', '', '', '', '', ''];
@@ -22,9 +23,34 @@ multiPlayerBtn.addEventListener('click', () => startGame('multi'));
 
 function startGame(selectedMode) {
     mode = selectedMode;
-    modeSelection.style.display = 'none';
+    
+    // Highlight selected mode
+    if (mode === 'single') {
+        singlePlayerBtn.style.backgroundColor = '#d0ffd0';
+        multiPlayerBtn.style.backgroundColor = '#fff';
+    } else {
+        multiPlayerBtn.style.backgroundColor = '#d0ffd0';
+        singlePlayerBtn.style.backgroundColor = '#fff';
+    }
+
+    // Disable both buttons
+    singlePlayerBtn.disabled = true;
+    multiPlayerBtn.disabled = true;
+
+    modeSelection.style.display = 'flex'; // Keep visible but buttons disabled
     gameBoard.style.display = 'grid';
     resetButton.style.display = 'block';
+    turnIndicator.style.display = 'block';
+    updateTurnIndicator();
+}
+
+// Update the turn indicator text
+function updateTurnIndicator() {
+    if (!gameOver) {
+        turnIndicator.textContent = currentPlayer === 'X' ? "X's Turn" : "O's Turn";
+    } else {
+        turnIndicator.textContent = '';
+    }
 }
 
 // --- Game Logic ---
@@ -51,11 +77,10 @@ function handleClick(e) {
     }
 
     if (mode === 'single' && currentPlayer === 'X') {
-        // Let computer play after short delay
         setTimeout(computerMove, 500);
     } else {
-        // Switch player in multiplayer mode
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        updateTurnIndicator();
     }
 }
 
@@ -77,6 +102,7 @@ function computerMove() {
     }
 
     currentPlayer = 'X';
+    updateTurnIndicator();
 }
 
 function endGame(result) {
@@ -89,9 +115,17 @@ function resetGame() {
     gameOver = false;
     currentPlayer = 'X';
     cells.forEach(cell => cell.textContent = '');
-    modeSelection.style.display = 'block';
+    
+    // Reset mode selection UI
+    singlePlayerBtn.disabled = false;
+    multiPlayerBtn.disabled = false;
+    singlePlayerBtn.style.backgroundColor = '#fff';
+    multiPlayerBtn.style.backgroundColor = '#fff';
+    
+    modeSelection.style.display = 'flex';
     gameBoard.style.display = 'none';
     resetButton.style.display = 'none';
+    turnIndicator.style.display = 'none';
 }
 
 // --- Minimax AI functions (unchanged) ---
