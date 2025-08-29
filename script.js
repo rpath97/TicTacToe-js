@@ -1,8 +1,14 @@
 const cells = document.querySelectorAll('.cell');
 const resetButton = document.getElementById('reset');
+const singlePlayerBtn = document.getElementById('single-player');
+const multiPlayerBtn = document.getElementById('multi-player');
+const modeSelection = document.getElementById('mode-selection');
+const gameBoard = document.getElementById('game');
+
 let currentPlayer = 'X';
 let board = ['', '', '', '', '', '', '', '', ''];
 let gameOver = false;
+let mode = null; // "single" or "multi"
 
 const winningCombinations = [
     [0,1,2], [3,4,5], [6,7,8],
@@ -10,6 +16,18 @@ const winningCombinations = [
     [0,4,8], [2,4,6]
 ];
 
+// --- Mode Selection ---
+singlePlayerBtn.addEventListener('click', () => startGame('single'));
+multiPlayerBtn.addEventListener('click', () => startGame('multi'));
+
+function startGame(selectedMode) {
+    mode = selectedMode;
+    modeSelection.style.display = 'none';
+    gameBoard.style.display = 'grid';
+    resetButton.style.display = 'block';
+}
+
+// --- Game Logic ---
 function checkWinner() {
     for (let combination of winningCombinations) {
         const [a, b, c] = combination;
@@ -22,16 +40,22 @@ function checkWinner() {
 
 function handleClick(e) {
     const index = e.target.dataset.index;
-    if (board[index] || gameOver || currentPlayer !== 'X') return;
+    if (board[index] || gameOver) return;
 
-    makeMove(index, 'X');
+    makeMove(index, currentPlayer);
 
     const result = checkWinner();
     if (result) {
         endGame(result);
-    } else {
-        // Let the computer play after a short delay
+        return;
+    }
+
+    if (mode === 'single' && currentPlayer === 'X') {
+        // Let computer play after short delay
         setTimeout(computerMove, 500);
+    } else {
+        // Switch player in multiplayer mode
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
     }
 }
 
@@ -43,16 +67,16 @@ function makeMove(index, player) {
 function computerMove() {
     if (gameOver) return;
 
-    // --- Simple AI: choose best move using minimax ---
     const bestMove = findBestMove();
     makeMove(bestMove, 'O');
 
     const result = checkWinner();
     if (result) {
         endGame(result);
+        return;
     }
 
-    currentPlayer = 'X'; // back to human
+    currentPlayer = 'X';
 }
 
 function endGame(result) {
@@ -65,8 +89,12 @@ function resetGame() {
     gameOver = false;
     currentPlayer = 'X';
     cells.forEach(cell => cell.textContent = '');
+    modeSelection.style.display = 'block';
+    gameBoard.style.display = 'none';
+    resetButton.style.display = 'none';
 }
 
+// --- Minimax AI functions (unchanged) ---
 function evaluate(b) {
     for (let [a,b1,c] of winningCombinations) {
         if (b[a] && b[a] === b[b1] && b[a] === b[c]) {
@@ -79,8 +107,8 @@ function evaluate(b) {
 function minimax(b, depth, isMaximizing) {
     const score = evaluate(b);
 
-    if (score === 10) return score - depth;  // prefer faster wins
-    if (score === -10) return score + depth; // prefer slower losses
+    if (score === 10) return score - depth;
+    if (score === -10) return score + depth;
     if (!b.includes('')) return 0;
 
     if (isMaximizing) {
@@ -125,5 +153,6 @@ function findBestMove() {
     return move;
 }
 
+// --- Event Listeners ---
 cells.forEach(cell => cell.addEventListener('click', handleClick));
 resetButton.addEventListener('click', resetGame);

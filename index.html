@@ -8,7 +8,14 @@
 </head>
 <body>
     <h1>Tic Tac Toe</h1>
-    <div id="game">
+
+    <div id="mode-selection">
+        <p>Choose Game Mode:</p>
+        <button id="single-player">Play vs Computer</button>
+        <button id="multi-player">Two Players</button>
+    </div>
+
+    <div id="game" style="display:none;">
         <div class="cell" data-index="0"></div>
         <div class="cell" data-index="1"></div>
         <div class="cell" data-index="2"></div>
@@ -19,7 +26,7 @@
         <div class="cell" data-index="7"></div>
         <div class="cell" data-index="8"></div>
     </div>
-    <button id="reset">Reset Game</button>
+    <button id="reset" style="display:none;">Reset Game</button>
 
     <script src="script.js"></script>
 </body>

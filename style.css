@@ -12,6 +12,33 @@ h1 {
     margin-bottom: 20px;
 }
 
+#mode-selection {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#mode-selection p {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+#mode-selection button {
+    margin: 0 10px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#mode-selection button:hover {
+    background-color: #45a049;
+}
+
 #game {
     display: grid;
     grid-template-columns: repeat(3, 100px);
@@ -40,4 +67,13 @@ h1 {
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+#reset:hover {
+    background-color: #da190b;
 }
