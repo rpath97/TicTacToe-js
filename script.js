@@ -5,11 +5,14 @@ const multiPlayerBtn = document.getElementById('multi-player');
 const modeSelection = document.getElementById('mode-selection');
 const gameBoard = document.getElementById('game');
 const turnIndicator = document.getElementById('turn-indicator');
+const victoryOverlay = document.getElementById('victory-overlay');
+const victoryText = document.getElementById('victory-text');
 
 let currentPlayer = 'X';
 let board = ['', '', '', '', '', '', '', '', ''];
 let gameOver = false;
 let mode = null; // "single" or "multi"
+let fireworksInterval;
 
 const winningCombinations = [
     [0,1,2], [3,4,5], [6,7,8],
@@ -117,38 +120,45 @@ function endGame(result) {
     if (result === 'Draw') {
         setTimeout(() => alert("It's a draw!"), 100);
     } else {
-        // Fireworks celebration for winner
-        launchFireworks();
-        setTimeout(() => alert(`${result} wins!`), 500);
+        // Show victory overlay
+        showVictoryOverlay(result);
+
+        // Fireworks continuously
+        startFireworks();
+
+        // Automatically reset after 10 seconds
+        setTimeout(() => {
+            stopFireworks();
+            resetGame();
+        }, 10000);
     }
 }
 
-// Fireworks function using canvas-confetti
-function launchFireworks() {
-    // Launch multiple bursts
-    const duration = 2 * 1000; // 2 seconds
-    const end = Date.now() + duration;
+// Show overlay with winner name
+function showVictoryOverlay(winner) {
+    victoryText.textContent = `Congratulations ${winner}!`;
+    victoryOverlay.style.display = 'flex';
+}
 
-    (function frame() {
-        confetti({
-            particleCount: 3,
-            angle: 60,
-            spread: 55,
-            origin: { x: 0 },
-            colors: ['#bb0000', '#ffffff', '#3333ff']
-        });
-        confetti({
-            particleCount: 3,
-            angle: 120,
-            spread: 55,
-            origin: { x: 1 },
-            colors: ['#bb0000', '#ffffff', '#3333ff']
-        });
+// Hide overlay (used in reset)
+function hideVictoryOverlay() {
+    victoryOverlay.style.display = 'none';
+}
 
-        if (Date.now() < end) {
-            requestAnimationFrame(frame);
-        }
-    })();
+// Fireworks control
+function startFireworks() {
+    fireworksInterval = setInterval(() => {
+        confetti({
+            particleCount: 5,
+            spread: 100,
+            origin: { x: Math.random(), y: Math.random() },
+            colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+        });
+    }, 200);
+}
+
+function stopFireworks() {
+    clearInterval(fireworksInterval);
 }
 
 function resetGame() {
@@ -167,6 +177,8 @@ function resetGame() {
     gameBoard.style.display = 'none';
     resetButton.style.display = 'none';
     turnIndicator.style.display = 'none';
+
+    hideVictoryOverlay();
 }
 
 // --- Minimax AI functions (unchanged) ---
