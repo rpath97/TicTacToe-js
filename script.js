@@ -96,7 +96,14 @@ function handleClick(e) {
 
 function makeMove(index, player) {
     board[index] = player;
-    cells[index].textContent = player;
+    const cell = cells[index];
+    cell.innerHTML = ''; // clear before placing new
+
+    if (player === 'X') {
+        cell.innerHTML = `<img src="logos/horse.png" alt="Horse">`;
+    } else {
+        cell.innerHTML = `<img src="logos/rose.png" alt="Rose">`;
+    }
 }
 
 function computerMove() {
@@ -142,7 +149,11 @@ function endGame(result) {
 
 // Show overlay with winner name
 function showVictoryOverlay(winner) {
-    victoryText.textContent = `Congratulations ${winner}!`;
+    if (winner === 'X') {
+        victoryText.innerHTML = `Congratulations <img src="logos/horse.png" alt="Horse" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
+    } else {
+        victoryText.innerHTML = `Congratulations <img src="logos/rose.png" alt="Rose" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
+    }
     victoryOverlay.style.display = 'flex';
 }
 
