@@ -7,6 +7,7 @@ const gameBoard = document.getElementById('game');
 const turnIndicator = document.getElementById('turn-indicator');
 const victoryOverlay = document.getElementById('victory-overlay');
 const victoryText = document.getElementById('victory-text');
+const cheerSound = document.getElementById('cheer-sound');
 
 let currentPlayer = 'X';
 let board = ['', '', '', '', '', '', '', '', ''];
@@ -123,14 +124,19 @@ function endGame(result) {
         // Show victory overlay
         showVictoryOverlay(result);
 
+        // Play cheering sound
+        cheerSound.currentTime = 0; // restart if already played
+        cheerSound.play();
+
         // Fireworks continuously
         startFireworks();
 
-        // Automatically reset after 5 seconds
+        // Automatically reset after 8 seconds
         setTimeout(() => {
             stopFireworks();
+            cheerSound.pause(); // stop the cheer sound
             resetGame();
-        }, 5000);
+        }, 8000);
     }
 }
 
