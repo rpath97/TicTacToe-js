@@ -147,12 +147,21 @@ function hideVictoryOverlay() {
 
 // Fireworks control
 function startFireworks() {
+    const centerX = 0.5; // horizontal center
+    const centerY = 0.4; // slightly above center for better visual
+
     fireworksInterval = setInterval(() => {
+        // Randomize around the text for dynamic effect
+        const randomX = centerX + (Math.random() - 0.5) * 0.2; // ±0.1 around center
+        const randomY = centerY + (Math.random() - 0.5) * 0.2; // ±0.1 around center
+
         confetti({
-            particleCount: 5,
-            spread: 100,
-            origin: { x: Math.random(), y: Math.random() },
-            colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff']
+            particleCount: 10,
+            spread: 120,
+            origin: { x: randomX, y: randomY },
+            colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'],
+            gravity: 0.6,
+            scalar: 1.2
         });
     }, 200);
 }
