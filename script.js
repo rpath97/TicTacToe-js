@@ -47,7 +47,13 @@ function startGame(selectedMode) {
 // Update the turn indicator text
 function updateTurnIndicator() {
     if (!gameOver) {
-        turnIndicator.textContent = currentPlayer === 'X' ? "X's Turn" : "O's Turn";
+        if (currentPlayer === 'X') {
+            turnIndicator.textContent = "X's Turn";
+            turnIndicator.style.color = 'blue';
+        } else {
+            turnIndicator.textContent = "O's Turn";
+            turnIndicator.style.color = 'red';
+        }
     } else {
         turnIndicator.textContent = '';
     }
@@ -107,7 +113,42 @@ function computerMove() {
 
 function endGame(result) {
     gameOver = true;
-    setTimeout(() => alert(result === 'Draw' ? "It's a draw!" : `${result} wins!`), 100);
+    
+    if (result === 'Draw') {
+        setTimeout(() => alert("It's a draw!"), 100);
+    } else {
+        // Fireworks celebration for winner
+        launchFireworks();
+        setTimeout(() => alert(`${result} wins!`), 500);
+    }
+}
+
+// Fireworks function using canvas-confetti
+function launchFireworks() {
+    // Launch multiple bursts
+    const duration = 2 * 1000; // 2 seconds
+    const end = Date.now() + duration;
+
+    (function frame() {
+        confetti({
+            particleCount: 3,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: ['#bb0000', '#ffffff', '#3333ff']
+        });
+        confetti({
+            particleCount: 3,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: ['#bb0000', '#ffffff', '#3333ff']
+        });
+
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
 }
 
 function resetGame() {
