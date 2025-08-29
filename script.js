@@ -126,11 +126,11 @@ function endGame(result) {
         // Fireworks continuously
         startFireworks();
 
-        // Automatically reset after 10 seconds
+        // Automatically reset after 5 seconds
         setTimeout(() => {
             stopFireworks();
             resetGame();
-        }, 10000);
+        }, 5000);
     }
 }
 
