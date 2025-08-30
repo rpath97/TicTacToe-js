@@ -28,20 +28,10 @@ multiPlayerBtn.addEventListener('click', () => startGame('multi'));
 function startGame(selectedMode) {
     mode = selectedMode;
     
-    // Highlight selected mode
-    if (mode === 'single') {
-        singlePlayerBtn.style.backgroundColor = '#d0ffd0';
-        multiPlayerBtn.style.backgroundColor = '#fff';
-    } else {
-        multiPlayerBtn.style.backgroundColor = '#d0ffd0';
-        singlePlayerBtn.style.backgroundColor = '#fff';
-    }
-
-    // Disable both buttons
-    singlePlayerBtn.disabled = true;
-    multiPlayerBtn.disabled = true;
-
-    modeSelection.style.display = 'flex'; // Keep visible but buttons disabled
+    // Hide the mode selection completely
+    modeSelection.style.display = 'none';
+    
+    // Show game elements
     gameBoard.style.display = 'grid';
     resetButton.style.display = 'block';
     turnIndicator.style.display = 'block';
@@ -146,9 +136,9 @@ function endGame(result) {
 // Show overlay with winner name
 function showVictoryOverlay(winner) {
     if (winner === 'X') {
-        victoryText.innerHTML = `Congratulations <img src="logos/horse.png" alt="Horse" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
+        victoryText.innerHTML = `Winner <img src="logos/horse.png" alt="Horse" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
     } else {
-        victoryText.innerHTML = `Congratulations <img src="logos/rose.png" alt="Rose" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
+        victoryText.innerHTML = `Winner <img src="logos/rose.png" alt="Rose" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
     }
     victoryOverlay.style.display = 'flex';
     
@@ -205,12 +195,7 @@ function resetGame() {
     currentPlayer = 'X';
     cells.forEach(cell => cell.textContent = '');
     
-    // Reset mode selection UI
-    singlePlayerBtn.disabled = false;
-    multiPlayerBtn.disabled = false;
-    singlePlayerBtn.style.backgroundColor = '#fff';
-    multiPlayerBtn.style.backgroundColor = '#fff';
-    
+    // Show mode selection again
     modeSelection.style.display = 'flex';
     gameBoard.style.display = 'none';
     resetButton.style.display = 'none';

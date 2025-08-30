@@ -2,50 +2,79 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     font-family: Arial, sans-serif;
     background: url('logos/background.jpg') repeat;
     background-size: 300px 300px;
     margin: 0;
-    padding: 50px;
+    padding: 20px;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-top: 80px;
 }
 
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-family: 'Georgia', serif;
-    color: #4b2e05;
-    text-shadow: 1px 1px 2px #fff;
+    color: #3e2b0c;
+    text-shadow: 
+        1px 1px 0 #fff, 
+        -1px -1px 0 #000,
+        2px 2px 6px rgba(0,0,0,0.6);
+    background: url('logos/background.jpg') repeat;
+    background-size: cover;
+    padding: 6px 20px;
+    border: 4px solid #4b2e05;
+    border-radius: 10px;
+    box-shadow: inset 3px 3px 8px rgba(0,0,0,0.5), 
+                4px 4px 10px rgba(0,0,0,0.5);
+    font-size: 1.8rem;
 }
 
 #mode-selection {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 #mode-selection p {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    color: #4b2e05;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #3e2b0c;
     font-weight: bold;
+    font-family: Arial, sans-serif;
 }
 
 #mode-selection button {
-    padding: 10px 20px;
-    font-size: 1rem;
-    margin: 5px;
+    padding: 8px 16px;
+    font-size: 0.95rem;
+    margin: 4px;
     cursor: pointer;
-    border: 2px solid #8b5a2b;
+    border: 2px solid #3e2b0c;
     border-radius: 8px;
-    background-color: #deb887;
-    color: #4b2e05;
+    background-color: #f5deb3;
+    color: #3e2b0c;
+    font-family: Arial, sans-serif;
     transition: all 0.2s ease;
     box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    animation: floatIn 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+#mode-selection button:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+#mode-selection button:nth-child(3) {
+    animation-delay: 0.4s;
 }
 
 #mode-selection button:hover {
     background-color: #f5deb3;
-    transform: scale(1.05);
+    transform: scale(1.05) translateY(-2px);
     box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
 }
 
@@ -95,24 +124,7 @@ h1 {
     max-height: 80%;
 }
 
-/* Engraved title now uses background image */
-#engraved-title {
-    margin-top: 15px;
-    font-family: 'Georgia', serif;
-    font-size: 2rem;
-    color: #3e2b0c;
-    text-shadow: 
-        1px 1px 0 #fff, 
-        -1px -1px 0 #000,
-        2px 2px 6px rgba(0,0,0,0.6);
-    background: url('logos/background.jpg') repeat;
-    background-size: cover;
-    padding: 8px 25px;
-    border: 6px solid #4b2e05;
-    border-radius: 12px;
-    box-shadow: inset 3px 3px 8px rgba(0,0,0,0.5), 
-                4px 4px 10px rgba(0,0,0,0.5);
-}
+
 
 #reset {
     margin-top: 20px;
@@ -150,6 +162,18 @@ h1 {
     font-weight: bold;
     animation: blink-colors 0.5s infinite;
     text-align: center;
+}
+
+/* Float in animation for buttons */
+@keyframes floatIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Blinking rainbow effect */
