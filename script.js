@@ -7,7 +7,7 @@ const gameBoard = document.getElementById('game');
 const turnIndicator = document.getElementById('turn-indicator');
 const victoryOverlay = document.getElementById('victory-overlay');
 const victoryText = document.getElementById('victory-text');
-const cheerSound = document.getElementById('cheer-sound');
+const cheer2Sound = document.getElementById('cheer2-sound');
 
 let currentPlayer = 'X';
 let board = ['', '', '', '', '', '', '', '', ''];
@@ -48,18 +48,18 @@ function startGame(selectedMode) {
     updateTurnIndicator();
 }
 
-// Update the turn indicator text
+// Update the turn indicator with icons
 function updateTurnIndicator() {
     if (!gameOver) {
         if (currentPlayer === 'X') {
-            turnIndicator.textContent = "X's Turn";
-            turnIndicator.style.color = 'blue';
+            turnIndicator.innerHTML = `<img src="logos/horse.png" alt="Horse" style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">'s Turn`;
+            turnIndicator.style.color = '#5c3005';
         } else {
-            turnIndicator.textContent = "O's Turn";
-            turnIndicator.style.color = 'red';
+            turnIndicator.innerHTML = `<img src="logos/rose.png" alt="Rose" style="width: 40px; height: 40px; vertical-align: middle; margin-right: 10px;">'s Turn`;
+            turnIndicator.style.color = '#8b0000';
         }
     } else {
-        turnIndicator.textContent = '';
+        turnIndicator.innerHTML = '';
     }
 }
 
@@ -87,6 +87,9 @@ function handleClick(e) {
     }
 
     if (mode === 'single' && currentPlayer === 'X') {
+        // Switch to computer's turn immediately
+        currentPlayer = 'O';
+        updateTurnIndicator();
         setTimeout(computerMove, 500);
     } else {
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
@@ -132,18 +135,11 @@ function endGame(result) {
         showVictoryOverlay(result);
 
         // Play cheering sound
-        cheerSound.currentTime = 0; // restart if already played
-        cheerSound.play();
+        cheer2Sound.currentTime = 0; // restart if already played
+        cheer2Sound.play();
 
         // Fireworks continuously
         startFireworks();
-
-        // Automatically reset after 8 seconds
-        setTimeout(() => {
-            stopFireworks();
-            cheerSound.pause(); // stop the cheer sound
-            resetGame();
-        }, 8000);
     }
 }
 
@@ -155,11 +151,27 @@ function showVictoryOverlay(winner) {
         victoryText.innerHTML = `Congratulations <img src="logos/rose.png" alt="Rose" style="width: 60px; height: 60px; vertical-align: middle; margin: 0 10px;">!`;
     }
     victoryOverlay.style.display = 'flex';
+    
+    // Add click event listener to return to main menu
+    victoryOverlay.addEventListener('click', returnToMainMenu);
 }
 
 // Hide overlay (used in reset)
 function hideVictoryOverlay() {
     victoryOverlay.style.display = 'none';
+}
+
+// Return to main menu when clicking on victory overlay
+function returnToMainMenu() {
+    // Stop fireworks and sound
+    stopFireworks();
+    cheer2Sound.pause();
+    
+    // Remove the click event listener to prevent multiple calls
+    victoryOverlay.removeEventListener('click', returnToMainMenu);
+    
+    // Reset the game to main menu
+    resetGame();
 }
 
 // Fireworks control

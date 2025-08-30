@@ -3,7 +3,8 @@ body {
     flex-direction: column;
     align-items: center;
     font-family: Arial, sans-serif;
-    background: #e5d1a3; /* warm wood-like */
+    background: url('logos/background.jpg') repeat;
+    background-size: 300px 300px;
     margin: 0;
     padding: 50px;
 }
@@ -61,35 +62,56 @@ h1 {
     grid-template-columns: repeat(3, 120px);
     grid-template-rows: repeat(3, 120px);
     gap: 10px;
-    background: #deb887; /* burlywood base */
-    border: 10px solid #8b5a2b; /* dark wood border */
-    border-radius: 15px;
-    padding: 10px;
-    box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 4px 4px 15px rgba(0,0,0,0.4);
+    background: url('logos/background.jpg') repeat;
+    background-size: cover;
+    border: 12px solid #5a381b; /* darker frame */
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: inset 0 0 25px rgba(0,0,0,0.4), 
+                4px 4px 15px rgba(0,0,0,0.5);
 }
 
 .cell {
     width: 120px;
     height: 120px;
-    background: #f5deb3; /* lighter wood */
+    background: rgba(255, 255, 255, 0.15); /* subtle lighter wood slot */
     border-radius: 12px;
-    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3);
+    box-shadow: inset 2px 2px 6px rgba(0,0,0,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, background 0.3s ease;
 }
 
 .cell:hover {
     transform: scale(1.05);
-    background: #f0d5a8;
+    background: rgba(255, 255, 255, 0.25);
 }
 
 /* Images instead of text */
 .cell img {
     max-width: 80%;
     max-height: 80%;
+}
+
+/* Engraved title now uses background image */
+#engraved-title {
+    margin-top: 15px;
+    font-family: 'Georgia', serif;
+    font-size: 2rem;
+    color: #3e2b0c;
+    text-shadow: 
+        1px 1px 0 #fff, 
+        -1px -1px 0 #000,
+        2px 2px 6px rgba(0,0,0,0.6);
+    background: url('logos/background.jpg') repeat;
+    background-size: cover;
+    padding: 8px 25px;
+    border: 6px solid #4b2e05;
+    border-radius: 12px;
+    box-shadow: inset 3px 3px 8px rgba(0,0,0,0.5), 
+                4px 4px 10px rgba(0,0,0,0.5);
 }
 
 #reset {
