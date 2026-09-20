@@ -1,43 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Horse vs Rose Tic Tac Toe with multiple game modes, difficulty levels, match scoring and responsive gameplay.">
+  <title>Horse vs Rose | Tic Tac Toe</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Tic Tac Toe</h1>
+  <main class="app-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Classic strategy game</p>
+        <h1>Horse <span>vs</span> Rose</h1>
+        <p class="subtitle">Tic Tac Toe with smart difficulty levels, match scoring and local multiplayer.</p>
+      </div>
+      <button id="sound-toggle" class="icon-button" type="button" aria-pressed="true" aria-label="Mute game sounds">Sound on</button>
+    </header>
 
-    <div id="mode-selection">
-        <p>Choose Game Mode:</p>
-        <button id="single-player">Play vs Computer</button>
-        <button id="multi-player">Two Players</button>
-    </div>
+    <section id="setup-panel" class="panel setup-panel" aria-labelledby="setup-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Game setup</p>
+          <h2 id="setup-title">Choose how you want to play</h2>
+        </div>
+      </div>
 
-    <div id="turn-indicator" style="display:none; margin-bottom:10px; font-size:1.2rem;"></div>
+      <div class="setup-grid">
+        <fieldset>
+          <legend>Game mode</legend>
+          <div class="option-grid two">
+            <button class="option-card selected" type="button" data-mode="single" aria-pressed="true">
+              <strong>Vs Computer</strong>
+              <span>Play against the computer</span>
+            </button>
+            <button class="option-card" type="button" data-mode="multi" aria-pressed="false">
+              <strong>Two Players</strong>
+              <span>Play together on one device</span>
+            </button>
+          </div>
+        </fieldset>
 
-    <div id="game" style="display:none;">
-        <div class="cell" data-index="0"></div>
-        <div class="cell" data-index="1"></div>
-        <div class="cell" data-index="2"></div>
-        <div class="cell" data-index="3"></div>
-        <div class="cell" data-index="4"></div>
-        <div class="cell" data-index="5"></div>
-        <div class="cell" data-index="6"></div>
-        <div class="cell" data-index="7"></div>
-        <div class="cell" data-index="8"></div>
-    </div>
+        <fieldset id="difficulty-fieldset">
+          <legend>Difficulty</legend>
+          <div class="option-grid three">
+            <button class="option-card" type="button" data-difficulty="easy" aria-pressed="false">
+              <strong>Easy</strong>
+              <span>Random moves</span>
+            </button>
+            <button class="option-card selected" type="button" data-difficulty="medium" aria-pressed="true">
+              <strong>Medium</strong>
+              <span>Smart but beatable</span>
+            </button>
+            <button class="option-card" type="button" data-difficulty="hard" aria-pressed="false">
+              <strong>Hard</strong>
+              <span>Minimax strategy</span>
+            </button>
+          </div>
+        </fieldset>
 
-    <button id="reset" style="display:none;">Reset Game</button>
+        <fieldset>
+          <legend>Match length</legend>
+          <div class="option-grid three">
+            <button class="option-card selected" type="button" data-match="1" aria-pressed="true">
+              <strong>Single</strong>
+              <span>First win</span>
+            </button>
+            <button class="option-card" type="button" data-match="3" aria-pressed="false">
+              <strong>Best of 3</strong>
+              <span>First to 2</span>
+            </button>
+            <button class="option-card" type="button" data-match="5" aria-pressed="false">
+              <strong>Best of 5</strong>
+              <span>First to 3</span>
+            </button>
+          </div>
+        </fieldset>
+      </div>
 
-    <div id="victory-overlay" style="display:none;">
-        <div id="victory-text"></div>
-    </div>
+      <button id="start-game" class="primary-button" type="button">Start match</button>
+    </section>
 
-    <audio id="cheer2-sound" src="cheer2.wav" preload="auto"></audio>
+    <section id="game-panel" class="panel game-panel" hidden aria-labelledby="game-title">
+      <div class="scoreboard">
+        <div class="player-card horse-card">
+          <img src="logos/horse.png" alt="" aria-hidden="true">
+          <div>
+            <span id="player-x-label">You</span>
+            <strong id="score-x">0</strong>
+          </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+        <div class="match-meta">
+          <span id="match-label">Single game</span>
+          <strong id="round-label">Round 1</strong>
+        </div>
+
+        <div class="player-card rose-card">
+          <img src="logos/rose.png" alt="" aria-hidden="true">
+          <div>
+            <span id="player-o-label">Computer</span>
+            <strong id="score-o">0</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">Current turn</p>
+          <h2 id="game-title">Your move</h2>
+        </div>
+        <div id="turn-badge" class="turn-badge">
+          <img src="logos/horse.png" alt="" aria-hidden="true">
+          <span>Horse</span>
+        </div>
+      </div>
+
+      <div id="game-board" class="game-board" role="grid" aria-label="Tic Tac Toe board">
+        <button class="cell" type="button" data-index="0" aria-label="Top left"></button>
+        <button class="cell" type="button" data-index="1" aria-label="Top center"></button>
+        <button class="cell" type="button" data-index="2" aria-label="Top right"></button>
+        <button class="cell" type="button" data-index="3" aria-label="Middle left"></button>
+        <button class="cell" type="button" data-index="4" aria-label="Center"></button>
+        <button class="cell" type="button" data-index="5" aria-label="Middle right"></button>
+        <button class="cell" type="button" data-index="6" aria-label="Bottom left"></button>
+        <button class="cell" type="button" data-index="7" aria-label="Bottom center"></button>
+        <button class="cell" type="button" data-index="8" aria-label="Bottom right"></button>
+      </div>
+
+      <p id="status-message" class="status-message" aria-live="polite">Horse starts the round.</p>
+
+      <div class="game-actions">
+        <button id="restart-round" class="secondary-button" type="button">Restart round</button>
+        <button id="back-menu" class="ghost-button" type="button">Back to menu</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="result-modal" class="modal-backdrop" hidden>
+    <section class="result-modal" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <div id="result-icon" class="result-icon"></div>
+      <p id="result-kicker" class="eyebrow">Round complete</p>
+      <h2 id="result-title">Horse wins</h2>
+      <p id="result-copy">Great round.</p>
+      <div class="modal-actions">
+        <button id="next-round" class="primary-button" type="button">Next round</button>
+        <button id="modal-menu" class="ghost-button" type="button">Back to menu</button>
+      </div>
+    </section>
+  </div>
+
+  <audio id="cheer-sound" src="cheer2.wav" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
